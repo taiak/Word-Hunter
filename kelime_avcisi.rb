@@ -3,7 +3,7 @@ include MS
 
 start = Time.new
 
-system "ruby ./lib/marshal_maker.rb" if Dir.glob("/lib/marshalled_files/*").empty?
+system "ruby ./lib/marshal_maker.rb" if Dir.glob("./lib/marshalled_files/*").empty?
 # pull otomat from file marshalled file
 # it's not necessary
 otomat = Marshal.load( File.read('./lib/marshalled_files/automat.marshalled') )

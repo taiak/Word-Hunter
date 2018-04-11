@@ -2,9 +2,9 @@
 module DS
   class ::Symbol
     def size?(size, comp_op = :==)
-      # string olarak girilmiş değerleri sembole çevirir
+      # string olarak girilmis degerleri sembole cevirir
       comp_op = comp_op.to_sym if comp_op.class == String
-      stat = nil # karşılaştırma koşullarına uymama durumu
+      stat = nil # karsilastirma kosullarina uymama durumu
       case comp_op
       when :==
         stat = (self.size == size)
@@ -17,83 +17,99 @@ module DS
       when :<=
         stat = (self.size <= size)
       end
-      return stat
+      stat
     end
   end
   class ::String
     private
-    VOWELS =  /[aâeıîioöuûüAÂEIİÎOÖUÜÛ]/.freeze
-    CONSONANT = /[bcçdfgğhjklmnprsştvwxyzBCÇDEFGHJKLMNPRSŞTVWXYZ]/.freeze
-    # VOWELS_STR = "aâeıîioöuûüAÂEIİÎOÖUÜÛ".freeze
-    # CONSONANT_STR = "bcçdfgğhjklmnprsştvyzBCÇDEFGHJKLMNPRSŞTVYZ".freeze
-    #BIG_CHARS =   /[AÂBCÇDEFGĞHIÎİJKLMNOÖPQRSŞTUÛÜVWYZ]/.freeze
-    #SMALL_CHARS = /[aâbcçdefgğhıîijklmnoöpqrsştuûüvwyz]/.freeze
-    #CHARS = "AÂBCÇDEFGĞHIÎİJKLMNOÖPQRSŞTUÛÜVWXYZaâbcçdefgğhıîijklmnoöpqrsştuûüvxwyz".freeze
 
-    # sonu mak veya mekle bitiyorsa true döner
+    VOWELS =  /[aâeiîioouûuAÂEIIÎOOUUÛ]/
+    CONSONANT = /[bccdfgghjklmnprsstvwxyzBCCDEFGHJKLMNPRSSTVWXYZ]/
+    # VOWELS_STR = "aâeiîioouûuAÂEIIÎOOUUÛ".freeze
+    # CONSONANT_STR = "bccdfgghjklmnprsstvyzBCCDEFGHJKLMNPRSSTVYZ".freeze
+    # BIG_CHARS =   /[AÂBCCDEFGGHIÎIJKLMNOOPQRSSTUÛUVWYZ]/.freeze
+    # SMALL_CHARS = /[aâbccdefgghiîijklmnoopqrsstuûuvwyz]/.freeze
+    # CHARS = "AÂBCCDEFGGHIÎIJKLMNOOPQRSSTUÛUVWXYZaâbccdefgghiîijklmnoopqrsstuûuvxwyz".freeze
+
+    # sonu mak veya mekle bitiyorsa true doner
     def verb?
-      self.end_with?('mak', 'mek')
+      end_with?('mak', 'mek')
     end
+
     public
+
     def bit_start_word?(str)
-      self.start_with?(str.to_bit)
+      start_with?(str.to_bit)
     end
+
     def bit_start_bit?(bitty)
-      self.start_with?(bitty)
+      start_with?(bitty)
     end
-    # verilen stringin bite çevrilmiş haliyle mi başlıyor?
+
+    # verilen stringin bite cevrilmis haliyle mi basliyor?
     def start_this_pattern?(str)
-      self.start_pattern?(str.to_bit)
+      start_pattern?(str.to_bit)
     end
-    # verilen patternle mi başlıyor
+
+    # verilen patternle mi basliyor
     def start_pattern?(pattern)
-      self.to_bit.start_with?(pattern)
+      to_bit.start_with?(pattern)
     end
+
     # sesli mi diye bakar.
     def vowel?(n = 0)
-      return false unless self[n] # nil veya false olma ihtimaline karşı
-      (VOWELS =~ self[n])?true:false
+      return false unless self[n] # nil veya false olma ihtimaline karsi
+      VOWELS =~ self[n] ? true : false
     end
+
     def to_alpha(n = 0)
-      return "1" unless self[n]
-      return (VOWELS =~ self[n])? "0" : "1"
+      return '1' unless self[n]
+      VOWELS =~ self[n] ? '0' : '1'
     end
-    # sessiz mi diye bakar. var sayılan 0.indis
+
+    # sessiz mi diye bakar. var sayilan 0.indis
     def const?(n = 0)
-      return false unless self[n] # nil veya false olma ihtimaline karşı
-      (CONSONANT =~ self[n])?true:false
+      return false unless self[n] # nil veya false olma ihtimaline karsi
+      CONSONANT =~ self[n] ? true : false
     end
-    # kontrol işlemi gerçekleştirerek gsub'ın daha hızlı gerçekleşmesini sağlar
+
+    # kontrol islemi gerceklestirerek gsub'in daha hizli gerceklesmesini saglar
     def fast_gsub(exp, change)
-      self.dup.fast_gsub!(exp, change)
+      dup.fast_gsub!(exp, change)
     end
+
     def fast_gsub!(exp, change)
-      (self.index exp) ? self.gsub!(exp,change) : self
+      index exp ? gsub!(exp, change) : self
     end
-    # verilen ifadeleri yenisiyle değiştirir
+
+    # verilen ifadeleri yenisiyle degistirir
     def gsub_all!(new, *old)
-      old.each { |exp| fast_gsub!(exp, "#{new}") }
-      return self
+      old.each { |exp| fast_gsub!(exp, new.to_s) }
+      self
     end
+
     def gsub_all(new, *old)
-      self.dup.gsub_all!(new, *old)
+      dup.gsub_all!(new, *old)
     end
-    # türkçe alfabedeki harfleri bit şekline çevirir
-    # sesli harfleri 0'a sessizleri 1'e çevir
-    # seslilerin varsayılanı 0 dır ve istisna tutulacak
+
+    # turkce alfabedeki harfleri bit sekline cevirir
+    # sesli harfleri 0'a sessizleri 1'e cevir
+    # seslilerin varsayilani 0 dir ve istisna tutulacak
     # karakterlerin girilmesi gerekilmektedir
     def to_bit(vow = 0)
-      self.dup.to_bit!(vow)
+      dup.to_bit!(vow)
     end
-    def to_bit!( vow = 0 )
-      self.fast_gsub!(VOWELS, vow.to_s)
-      self.fast_gsub!(CONSONANT, (1-(vow.to_i)).to_s)
+
+    def to_bit!(vow = 0)
+      fast_gsub!(VOWELS, vow.to_s)
+      fast_gsub!(CONSONANT, (1 - vow.to_i).to_s)
     end
-    # verilen parametreye göre karşılaştırma yapar.
+
+    # verilen parametreye gore karsilastirma yapar.
     def size?(size, comp_op = :==)
-      # string olarak girilmiş değerleri sembole çevirir
+      # string olarak girilmis degerleri sembole cevirir
       comp_op = comp_op.to_sym if comp_op.class == String
-      stat = nil # karşılaştırma koşullarına uymama durumu
+      stat = nil # karsilastirma kosullarina uymama durumu
       case comp_op
       when :==
         stat = (self.size == size)
@@ -106,16 +122,17 @@ module DS
       when :<=
         stat = (self.size <= size)
       end
-      return stat
+      stat
     end
-    # verilen stringdeki bit koşullarına uyan elemanları (0 ve 1)
-    # comp_op a göre karşılaştırır. varsayılan `==` 'dir
+
+    # verilen stringdeki bit kosullarina uyan elemanlari (0 ve 1)
+    # comp_op a gore karsilastirir. varsayilan `==` 'dir
     def bit_size?(size, comp_op = :==)
-      # string olarak girilmiş değerleri sembole çevirir
+      # string olarak girilmis degerleri sembole cevirir
       comp_op = comp_op.to_sym if comp_op.class == String
-      # toplam bit içeriğini bul
-      bit_count = self.count('0') + self.count('1')
-      stat = nil # karşılaştırma koşullarına uymama durumu
+      # toplam bit icerigini bul
+      bit_count = count('0') + count('1')
+      stat = nil # karsilastirma kosullarina uymama durumu
       case comp_op
       when :==
         stat = (bit_count == size)
@@ -128,218 +145,264 @@ module DS
       when :<=
         stat = (bit_count <= size)
       end
-      return stat
+      stat
     end
-    # string boyutlarına göre true veya false döner
-    def limit? (low_limit, up_limit)
-      self.size < up_limit and self.size > low_limit
+
+    # string boyutlarina gore true veya false doner
+    def limit?(low_limit, up_limit)
+      (size < up_limit) && (size > low_limit)
     end
-    # türkçe kurallara göre hecelemeyi sağlar
+
+    # turkce kurallara gore hecelemeyi saglar
     def spell
-      syllabled = self.downcase
-      limit = self.size
+      syllabled = downcase
+      limit = size
       i = 1
       while i < limit
         if vowel?(-i)
-          if vowel?(-(i+1))
-            syllabled.insert(limit-i, "-")
+          if vowel?(-(i + 1))
+            syllabled.insert(limit - i, '-')
           else
             i += 1
-            if (limit-i > 2) || vowel?(-(i+1)) 
-              syllabled.insert(limit-i, "-")
+            if (limit - i > 2) || vowel?(-(i + 1))
+              syllabled.insert(limit - i, '-')
             elsif vowel? # ilk harf sesliyse
-              syllabled.insert(2, "-") 
+              syllabled.insert(2, '-')
             end
           end
         end
         i += 1
       end
-      return syllabled
+      syllabled
     end
+
     def bit_spell(vowel = '0')
-      syllabled = self.downcase
-      limit = self.size
+      syllabled = downcase
+      limit = size
       i = 1
       while i < limit
         if self[-i] == vowel
-          if self[-(i+1)] == vowel
-            syllabled.insert(limit-i, "-")
+          if self[-(i + 1)] == vowel
+            syllabled.insert(limit - i, '-')
           else
             i += 1
-            if (limit-i > 2) || self[-(i+1)] == vowel 
-              syllabled.insert(limit-i, "-")
+            if (limit - i > 2) || self[-(i + 1)] == vowel
+              syllabled.insert(limit - i, '-')
             elsif self[0] == vowel # ilk harf sesliyse
-              syllabled.insert(2, "-") 
+              syllabled.insert(2, '-')
             end
           end
         end
         i += 1
       end
-      return syllabled
+      syllabled
     end
+
     def bit_spell!(vowel = '0')
-      self.replace(self.bit_spell(vowel))
+      replace(bit_spell(vowel))
     end
+
     def spell!
-      self.replace( self.spell )
+      replace(spell)
     end
   end
   class ::Array
     protected
-    # [[symbole, number],[symbole, number]] şeklindeki diziden sembolleri seçer
+
+    # [[symbole, number],[symbole, number]] seklindeki diziden sembolleri secer
     def catch_class(clss)
-      self.flatten.class? clss
+      flatten.class? clss
     end
+
     public
-    # herbir elemanı sringe dönüştürür
+
+    # herbir elemani sringe donusturur
     def to_str
-      self.dup.to_str!
+      dup.to_str!
     end
+
     def to_str!
-      self.collect! { |word| word.to_s }
+      collect!(&:to_s)
     end
-    # gsub işlemini diziye uyarla
+
+    # gsub islemini diziye uyarla
     def gsub!(before, after)
-      self.collect! { |word| (word.index before) ? word.gsub(/#{before}/, after): word }
+      collect! { |word| word.index before ? word.gsub(/#{before}/, after) : word }
     end
+
     def gsub(before, after)
-      self.dup.gsub!(before, after)
+      dup.gsub!(before, after)
     end
-    # verilen eski harf vey kelimeleri yenisiyle değiştirir
+
+    # verilen eski harf vey kelimeleri yenisiyle degistirir
     def gsub_all!(new, *old)
-      self.collect! { |element| element.gsub_all!(new, *old) }
+      collect! { |element| element.gsub_all!(new, *old) }
     end
+
     def gsub_all(new, *old)
-      self.dup.gsub_all!(new, *old)
+      dup.gsub_all!(new, *old)
     end
-    # dizideki stringleri heceler ve heceleri döner. uniq değildir 
+
+    # dizideki stringleri heceler ve heceleri doner. uniq degildir
     def spell_split(bracket = '-')
-      return self.map { |word| word.spell.split(bracket) }.flatten
+      map { |word| word.spell.split(bracket) }.flatten
     end
-    # herbir stringin tekrar sayısını verir. her eleman [isim, sayi] şeklinde döner
+
+    # herbir stringin tekrar sayisini verir. her eleman [isim, sayi] seklinde doner
     def syll_count
-      self.spell_split.rep_count
+      spell_split.rep_count
     end
-    # verilen dizideki elemanları sayar ve [adı, sayısı] şeklinde uniq bir liste verir
+
+    # verilen dizideki elemanlari sayar ve [adi, sayisi] seklinde uniq bir liste verir
     def rep_count
-      self.each_with_object(Hash.new(0)){ |key,hash| hash[key] += 1 }.sort {|sym, rep| rep[1].to_i <=> sym[1].to_i }
+      each_with_object(Hash.new(0)) { |key, hash| hash[key] += 1 }.sort { |sym, rep| rep[1].to_i <=> sym[1].to_i }
     end
-    # heceleri(syllables) verir. sembol olarak dönüş yapar
+
+    # heceleri(syllables) verir. sembol olarak donus yapar
     def syll
-      self.syll_count.catch_class(String)
+      syll_count.catch_class(String)
     end
-    # verilen patternle başlayan kelimeleri döner
+
+    # verilen patternle baslayan kelimeleri doner
     def start_pattern?(pattern)
-      self.select { |word| word.start_pattern?(pattern) }
+      select { |word| word.start_pattern?(pattern) }
     end
+
     # verilen pattern
-    def start_this_pattern?(str) 
-      self.select { |word| word.start_this_pattern?(str) }
+    def start_this_pattern?(str)
+      select { |word| word.start_this_pattern?(str) }
     end
-    # wordy ile başlayan kelime var mı diye bakar 
+
+    # wordy ile baslayan kelime var mi diye bakar
     def any_start?(*wordys)
-      self.any? { |word| word.start_with?(*wordys)}
+      any? { |word| word.start_with?(*wordys) }
     end
-    # wordy ile biten kelime var mı diye bakar
-    def any_end?( wordy )
-      self.any? { |word| word.end_with? wordy}
+
+    # wordy ile biten kelime var mi diye bakar
+    def any_end?(wordy)
+      any? { |word| word.end_with? wordy }
     end
-    # verilen patterni kelimelerde arar ve geçerli kelimeleri döner
+
+    # verilen patterni kelimelerde arar ve gecerli kelimeleri doner
     def index_pattern?(pattern)
-      self.select { |word| word.to_bit.index(pattern) }
+      select { |word| word.to_bit.index(pattern) }
     end
-    # verilen dizinin elemanlarını bit bazında türkçe heceler
+
+    # verilen dizinin elemanlarini bit bazinda turkce heceler
     def bit_spell
-      self.dup.bit_spell!
+      dup.bit_spell!
     end
+
     def bit_spell!
-      self.collect! { |word| word.bit_spell! }
+      collect!(&:bit_spell!)
     end
-    # verilen dizideki elemanları türkçeye göre heceler
+
+    # verilen dizideki elemanlari turkceye gore heceler
     def spell
-      self.dup.spell!
+      dup.spell!
     end
+
     def spell!
-      self.collect! { |word| word.spell }
+      collect!(&:spell)
     end
-    # kelimeleri bit şeklinde 0 ve 1'e çevirir
+
+    # kelimeleri bit seklinde 0 ve 1'e cevirir
     def to_bit(vow = 0)
-      self.dup.to_bit!(vow)
+      dup.to_bit!(vow)
     end
+
     def to_bit!(vow = 0)
-      self.collect! { |word| word.to_bit!(vow) }
+      collect! { |word| word.to_bit!(vow) }
     end
-    # verilen dizinin içindeki 0 ve 1 lerin toplamını comp_op'a göre
-    # karşılaştırır
+
+    # verilen dizinin icindeki 0 ve 1 lerin toplamini comp_op'a gore
+    # karsilastirir
     def bit_size?(size, comp_op = :==)
-      self.select { |word| word.bit_size?(size, comp_op) }
+      select { |word| word.bit_size?(size, comp_op) }
     end
-    # verilen sınıftaki nesneleri döner
+
+    # verilen siniftaki nesneleri doner
     def class?(clss)
-      self.select { |word| word.class == clss }
+      select { |word| word.class == clss }
     end
-    # wordy kelimesini içeren kelimeleri seçer 
+
+    # wordy kelimesini iceren kelimeleri secer
     def search?(wordy)
-      self.select { |word| word.include? wordy}
+      select { |word| word.include? wordy }
     end
-    # wordy kelimesini içermeyen kelimeleri seçer
+
+    # wordy kelimesini icermeyen kelimeleri secer
     def search_not?(wordy)
-      self.select { |word| !word.include? wordy}
+      reject { |word| word.include? wordy }
     end
-    # prefix'le başlayan kelimeleri seçer
-    def start_with? (*prefix)
-      self.select { |word| word.start_with?(*prefix) }
+
+    # prefix'le baslayan kelimeleri secer
+    def start_with?(*prefix)
+      select { |word| word.start_with?(*prefix) }
     end
-    # sonu suffix ile biten kelimeleri seç    
-    def end_with? (suffix)
-      self.select { |word| word.end_with? (suffix) }
+
+    # sonu suffix ile biten kelimeleri sec
+    def end_with?(suffix)
+      select { |word| word.end_with? suffix }
     end
-    # içinde ' '(boşluk) karakteri olmayan kelimeleri seç
+
+    # icinde ' '(bosluk) karakteri olmayan kelimeleri sec
     def non_space?
-      self.select { |word| !word.index(' ') }
+      reject { |word| word.index(' ') }
     end
-    # içinde ' '(boşluk) karakteri olan kelimeleri seç
+
+    # icinde ' '(bosluk) karakteri olan kelimeleri sec
     def with_space?
-      self.select { |word| word.index(' ') }    
+      select { |word| word.index(' ') }
     end
-    # fiil kelimeleri seç
+
+    # fiil kelimeleri sec
     def verb?
-      self.select { |word| word.verb? }.collect { |word| word[0...-3] }
+      select(&:verb?).collect { |word| word[0...-3] }
     end
-    # boyutu size'a göre, verilen işaretle işleme sok ve koşula uyanları seç
-    # ön tanımlı işlem parametre verilmezse == işlemi öntanımlı
-    def size? (size, comp_op = :==)
-      self.select { |word| word.size?(size, comp_op) }
+
+    # boyutu size'a gore, verilen isaretle isleme sok ve kosula uyanlari sec
+    # on tanimli islem parametre verilmezse == islemi ontanimli
+    def size?(size, comp_op = :==)
+      select { |word| word.size?(size, comp_op) }
     end
-    # boyutu size? koşullarına uymayan sonuçları getir
-    def not_size? (size, comp_op = :==)
-      self.select { |word| !word.size?(size, comp_op) }
+
+    # boyutu size? kosullarina uymayan sonuclari getir
+    def not_size?(size, comp_op = :==)
+      reject { |word| word.size?(size, comp_op) }
     end
-    # uzunluğu low_limit ve up_limit arasında olan kelimeleri seç
-    def limit? (low_limit, up_limit)
-      self.select { |word| word.limit?(low_limit, up_limit) }
+
+    # uzunlugu low_limit ve up_limit arasinda olan kelimeleri sec
+    def limit?(low_limit, up_limit)
+      select { |word| word.limit?(low_limit, up_limit) }
     end
-    # verilen dizideki boşlukları siler 
+
+    # verilen dizideki bosluklari siler
     def unspace
-      self.dup.unspace!
+      dup.unspace!
     end
+
     def unspace!
-      self.collect! { |word| (word.index ' ')? word.gsub(' ', ''): word }
+      collect! { |word| word.index ' ' ? word.delete(' ') : word }
     end
-    # kelimelerin başındaki ve sonundaki boşlukları siler
+
+    # kelimelerin basindaki ve sonundaki bosluklari siler
     def strip
-      self.dup.strip!
+      dup.strip!
     end
+
     def strip!
-      self.collect! { |word| word.strip }
+      collect!(&:strip)
     end
-    # nil veya false olan kelimeleri seçer
+
+    # nil veya false olan kelimeleri secer
     def not?
-      self.select { |word| !word }
+      reject { |word| word }
     end
-    # nil veya false olmayan kelimeleri seçer
+
+    # nil veya false olmayan kelimeleri secer
     def true?
-      self.select { |word| word }
+      select { |word| word }
     end
   end
 end

@@ -1,58 +1,68 @@
 # DictionarySearcherTools
 module DST
   class ::String
-    BIG_CHARS =   /[AÂBCÇDEFGĞHIÎİJKLMNOÖPQRSŞTUÛÜVWYZ]/.freeze
-    SMALL_CHARS = /[aâbcçdefgğhıîijklmnoöpqrsştuûüvwyz]/.freeze
+    BIG_CHARS =   /[AÂBCCDEFGGHIÎIJKLMNOOPQRSSTUÛUVWYZ]/
+    SMALL_CHARS = /[aâbccdefgghiîijklmnoopqrsstuûuvwyz]/
 
-    # büyük harfle başlıyarsa true döner
+    # buyuk harfle basliyarsa true doner
     def start_with_big?
-       (BIG_CHARS =~ self[0])?true:false
+      BIG_CHARS =~ self[0] ? true : false
     end
-    # küçük harfle başlıyorsa true döner
+
+    # kucuk harfle basliyorsa true doner
     def start_with_small?
-      (SMALL_CHARS =~ self[0])?true:false 
+      SMALL_CHARS =~ self[0] ? true : false
     end
   end
   class ::Array
-    # kelimelerin başındaki ve sonundaki boşlukları siler
-    # false olan değerleri döner
+    # kelimelerin basindaki ve sonundaki bosluklari siler
+    # false olan degerleri doner
     def false?
-      self.select { |word| word == false }
+      select { |word| word == false }
     end
-    # nil olan değerleri döner
+
+    # nil olan degerleri doner
     def nil?
-      self.select { |word| word == nil }
+      select(&:nil?)
     end
-    # FIXME: Türkçeye uyarla
-    # upcase işlemini sağlar
+
+    # FIXME: Turkceye uyarla
+    # upcase islemini saglar
     def upcase
-      self.dup.upcase!
+      dup.upcase!
     end
+
     def upcase!
-      self.collect! { |word| word.upcase }
+      collect!(&:upcase)
     end
-    # FIXME: Türkçeye uyarla
-    # downcase işlemini sağlar
+
+    # FIXME: Turkceye uyarla
+    # downcase islemini saglar
     def downcase
-      self.dup.downcase!
+      dup.downcase!
     end
+
     def downcase!
-      self.collect! { |word| word.downcase }
+      collect!(&:downcase)
     end
-    # büyük harfle başlayan kelimeleri seç
+
+    # buyuk harfle baslayan kelimeleri sec
     def start_big?
-      self.select { |word| word.start_with_big? }
+      select(&:start_with_big?)
     end
-    # küçük harfle başlayan kelimeleri seç
+
+    # kucuk harfle baslayan kelimeleri sec
     def start_small?
-      self.select { |word| word.start_with_small? }
+      select(&:start_with_small?)
     end
-    # herbir elemanı sembole çevirir
+
+    # herbir elemani sembole cevirir
     def each_to_sym
-      self.dup.each_to_sym!
+      dup.each_to_sym!
     end
+
     def each_to_sym!
-      self.collect! { |word| word.to_sym }
+      collect!(&:to_sym)
     end
   end
 end

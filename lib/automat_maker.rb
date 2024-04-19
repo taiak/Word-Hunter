@@ -1,5 +1,5 @@
 require_relative 'modules/DFA.rb'
-# Bu otomatin tasarimi ve tasarimin haklari Hanne Yazbahar'a aittir
+# Bu otomatin tasarimi ve tasarimin haklari Hanne Kıroğlu'na aittir
 automat = DFA.new(start: :q0, end: %i[q2 q4 q5 q7 q8 q9 q10 q11 q12 q13 q14 q15 q16 q17 q18 q19 q21 q22 q23 q25 q26],
                   transition:   { q0: { :'01' => :q1, :'110' => :q2, :'10' => :q3, :'101' => :q4, :'011' => :q5, :'0' => :q6, :'1011' => :q7, :'1101' => :q7 },
                                   q1: { :'10' => :q8, :'101' => :q9, :'1011' => :q10 },

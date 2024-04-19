@@ -2,7 +2,7 @@
 
 Bu program kelime avcısı ve benzeri programların kelimelerini çözümlemek amaçlı tasarlanmıştır.
 
-Otomat tasarımı Hanne Yazbahar'a ait olup, kalan kısım Taha Yasir Kıroğlu tarafından tasarlanmıştır.
+Otomat tasarımı Hanne Kıroğlu'a ait olup, kalan kısım Taha Yasir Kıroğlu tarafından tasarlanmıştır.
 
 Program kullanılan otomat gereğince sadece türkçe dilinde çalışmak üzere tasarlanmıştır.
 
